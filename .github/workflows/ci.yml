@@ -16,6 +16,9 @@ jobs:
     runs-on: windows-latest, windows-2025, windows-2022, windows-2019
 
     steps:
+    - uses: actions/checkout@v3
+    - name: Check out repository code
+
     - uses: actions/checkout@v4
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
