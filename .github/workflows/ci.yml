@@ -16,16 +16,17 @@ jobs:
     runs-on: windows-latest, windows-2025, windows-2022, windows-2019
 
     steps:
-    - uses: actions/checkout@v3
-      name: Check out repository code
+    - name: Check out repository code
+      uses: actions/checkout@v3
 
-    - uses: actions/setup-dotnet@v4
-      name: Setup .NET
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
-        
-    - uses: josStorer/get-current-time@v2
+
     - name: Get current time
+      uses: josStorer/get-current-time@v2
+      
       id: current-time
       with:
         format: YYYYMMDD-HH
