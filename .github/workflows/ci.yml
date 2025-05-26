@@ -1,0 +1,47 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: App Build
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+defaults:
+  run:
+    shell: powershell
+    
+jobs:
+  build:
+    runs-on: windows-latest, windows-2025, windows-2022, windows-2019
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+        
+    - uses: josStorer/get-current-time@v2
+    - name: Get current time
+      id: current-time
+      with:
+        format: YYYYMMDD-HH
+        utcOffset: "+08:00"
+    - name: Use current time
+      env:
+        TIME: "${{ steps.current-time.outputs.time }}"
+        R_TIME: "${{ steps.current-time.outputs.readableTime }}"
+        F_TIME: "${{ steps.current-time.outputs.formattedTime }}"
+        YEAR: "${{ steps.current-time.outputs.year }}"
+        DAY: "${{ steps.current-time.outputs.day }}"
+      run: echo $TIME $R_TIME $F_TIME $YEAR $DAY
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
